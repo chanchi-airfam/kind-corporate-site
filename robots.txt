@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://chanchi-airfam.github.io/kind-corporate-site/sitemap.xml
