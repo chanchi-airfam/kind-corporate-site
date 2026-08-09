@@ -106,6 +106,12 @@
   @media (prefers-reduced-motion: reduce) {
     .hero-marquee { animation: none; }
   }
+  .step-circle { background-color: #e7e5e4; color: #a8a29e; }
+  .step-label { color: #a8a29e; }
+  [data-step].is-active .step-circle,
+  [data-step].is-done .step-circle { background-color: #f59e0b; color: #ffffff; }
+  [data-step].is-active .step-label,
+  [data-step].is-done .step-label { color: #1c1917; }
 </style>
 <script type="application/ld+json">
 {
@@ -403,56 +409,107 @@
         </p>
       </div>
 
-      <form class="bg-white rounded-2xl p-6 md:p-10 shadow-2xl space-y-6">
-        <div class="grid sm:grid-cols-2 gap-6">
-          <div>
-            <label for="company-name" class="block text-sm font-bold text-stone-700 mb-2">会社名 <span class="text-amber-500">*</span></label>
-            <input type="text" id="company-name" name="company-name" required placeholder="〇〇建設株式会社"
-              class="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+      <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <!-- Step indicator -->
+        <div class="flex items-center justify-center gap-2 md:gap-3 pt-7 md:pt-9 pb-1" data-step-wrap="contact">
+          <div class="flex items-center gap-1.5 md:gap-2" data-step="1">
+            <span class="step-circle w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors">1</span>
+            <span class="step-label text-xs md:text-sm font-bold transition-colors">入力</span>
           </div>
-          <div>
-            <label for="name" class="block text-sm font-bold text-stone-700 mb-2">ご担当者名 <span class="text-amber-500">*</span></label>
-            <input type="text" id="name" name="name" required placeholder="山田 太郎"
-              class="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+          <div class="w-6 md:w-10 h-px bg-stone-200"></div>
+          <div class="flex items-center gap-1.5 md:gap-2" data-step="2">
+            <span class="step-circle w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors">2</span>
+            <span class="step-label text-xs md:text-sm font-bold transition-colors">確認</span>
           </div>
-        </div>
-
-        <div class="grid sm:grid-cols-2 gap-6">
-          <div>
-            <label for="email" class="block text-sm font-bold text-stone-700 mb-2">メールアドレス <span class="text-amber-500">*</span></label>
-            <input type="email" id="email" name="email" required placeholder="example@company.co.jp"
-              class="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
-          </div>
-          <div>
-            <label for="tel" class="block text-sm font-bold text-stone-700 mb-2">電話番号</label>
-            <input type="tel" id="tel" name="tel" placeholder="000-0000-0000"
-              class="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+          <div class="w-6 md:w-10 h-px bg-stone-200"></div>
+          <div class="flex items-center gap-1.5 md:gap-2" data-step="3">
+            <span class="step-circle w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-colors">3</span>
+            <span class="step-label text-xs md:text-sm font-bold transition-colors">完了</span>
           </div>
         </div>
 
-        <div>
-          <label for="subject" class="block text-sm font-bold text-stone-700 mb-2">ご相談内容</label>
-          <select id="subject" name="subject"
-            class="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition bg-white">
-            <option>木造建築新築工事について</option>
-            <option>リフォーム工事について</option>
-            <option>店舗内装工事について</option>
-            <option>その他のご相談</option>
-          </select>
+        <!-- Step 1: 入力 -->
+        <form id="contact-form" class="p-6 md:p-10 space-y-6">
+          <div class="grid sm:grid-cols-2 gap-6">
+            <div>
+              <label for="company-name" class="block text-sm font-bold text-stone-700 mb-2">会社名 <span class="text-amber-500">*</span></label>
+              <input type="text" id="company-name" name="company-name" required placeholder="〇〇建設株式会社"
+                class="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+            </div>
+            <div>
+              <label for="name" class="block text-sm font-bold text-stone-700 mb-2">ご担当者名 <span class="text-amber-500">*</span></label>
+              <input type="text" id="name" name="name" required placeholder="山田 太郎"
+                class="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-6">
+            <div>
+              <label for="email" class="block text-sm font-bold text-stone-700 mb-2">メールアドレス <span class="text-amber-500">*</span></label>
+              <input type="email" id="email" name="email" required placeholder="example@company.co.jp"
+                class="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+            </div>
+            <div>
+              <label for="tel" class="block text-sm font-bold text-stone-700 mb-2">電話番号</label>
+              <input type="tel" id="tel" name="tel" placeholder="000-0000-0000"
+                class="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition">
+            </div>
+          </div>
+
+          <div>
+            <label for="subject" class="block text-sm font-bold text-stone-700 mb-2">ご相談内容</label>
+            <select id="subject" name="subject"
+              class="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition bg-white">
+              <option>木造建築新築工事について</option>
+              <option>リフォーム工事について</option>
+              <option>店舗内装工事について</option>
+              <option>その他のご相談</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="message" class="block text-sm font-bold text-stone-700 mb-2">お問い合わせ内容 <span class="text-amber-500">*</span></label>
+            <textarea id="message" name="message" rows="5" required placeholder="ご相談内容の詳細をご記入ください"
+              class="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition resize-none"></textarea>
+          </div>
+
+          <button type="submit"
+            class="w-full inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold px-8 py-4 rounded-lg shadow-lg shadow-amber-500/30 transition-colors">
+            入力内容を確認する
+            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+          </button>
+        </form>
+
+        <!-- Step 2: 確認 -->
+        <div id="contact-confirm" class="hidden p-6 md:p-10">
+          <p class="text-stone-500 text-sm mb-6">以下の内容でよろしければ「この内容で送信する」を押してください。</p>
+          <dl id="contact-confirm-list" class="divide-y divide-stone-100 border-t border-b border-stone-100 mb-8"></dl>
+          <div class="flex flex-col sm:flex-row-reverse gap-3">
+            <button type="button" id="contact-submit-btn"
+              class="w-full sm:flex-1 inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold px-8 py-4 rounded-lg shadow-lg shadow-amber-500/30 transition-colors">
+              <i data-lucide="send" class="w-5 h-5"></i>
+              この内容で送信する
+            </button>
+            <button type="button" id="contact-back-btn"
+              class="w-full sm:flex-1 inline-flex items-center justify-center gap-2 border border-stone-300 hover:bg-stone-50 text-stone-700 font-bold px-8 py-4 rounded-lg transition-colors">
+              <i data-lucide="arrow-left" class="w-5 h-5"></i>
+              内容を修正する
+            </button>
+          </div>
         </div>
 
-        <div>
-          <label for="message" class="block text-sm font-bold text-stone-700 mb-2">お問い合わせ内容 <span class="text-amber-500">*</span></label>
-          <textarea id="message" name="message" rows="5" required placeholder="ご相談内容の詳細をご記入ください"
-            class="w-full border border-stone-200 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition resize-none"></textarea>
+        <!-- Step 3: 完了 -->
+        <div id="contact-complete" class="hidden p-10 md:p-16 text-center">
+          <div class="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center mx-auto mb-6">
+            <i data-lucide="check" class="w-8 h-8 text-amber-500"></i>
+          </div>
+          <h3 class="text-xl md:text-2xl font-black text-stone-900 mb-4">お問い合わせを受け付けました</h3>
+          <p class="text-stone-500 text-sm md:text-base leading-relaxed">
+            お問い合わせいただきありがとうございます。<br>
+            内容を確認の上、担当者より折り返しご連絡いたします。
+          </p>
         </div>
-
-        <button type="submit"
-          class="w-full inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold px-8 py-4 rounded-lg shadow-lg shadow-amber-500/30 transition-colors">
-          <i data-lucide="send" class="w-5 h-5"></i>
-          送信する
-        </button>
-      </form>
+      </div>
     </div>
   </section>
 
@@ -498,6 +555,84 @@
       menuBtn.querySelector('[data-lucide]').setAttribute('data-lucide', 'menu');
       lucide.createIcons();
     });
+  });
+
+  // 多段フォーム（入力 → 確認 → 完了）
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function setupMultiStepForm({ formId, confirmId, confirmListId, completeId, backBtnId, submitBtnId }) {
+    const form = document.getElementById(formId);
+    if (!form) return;
+    const confirmPanel = document.getElementById(confirmId);
+    const confirmList = document.getElementById(confirmListId);
+    const completePanel = document.getElementById(completeId);
+    const backBtn = document.getElementById(backBtnId);
+    const submitBtn = document.getElementById(submitBtnId);
+    const stepWrap = form.closest('[class*="rounded-2xl"]') || document;
+    const stepEls = stepWrap.querySelectorAll('[data-step]');
+
+    function setActiveStep(step) {
+      stepEls.forEach(el => {
+        const n = parseInt(el.dataset.step, 10);
+        el.classList.toggle('is-done', n < step);
+        el.classList.toggle('is-active', n === step);
+      });
+    }
+
+    function buildConfirmRows() {
+      const fields = form.querySelectorAll('input[name], select[name], textarea[name]');
+      let html = '';
+      fields.forEach(el => {
+        const label = form.querySelector(`label[for="${el.id}"]`);
+        const labelText = label ? label.textContent.replace('*', '').trim() : el.name;
+        let value = el.tagName === 'SELECT' ? (el.options[el.selectedIndex] ? el.options[el.selectedIndex].text : '') : el.value.trim();
+        html += `
+          <div class="py-3 sm:py-4 grid sm:grid-cols-3 gap-1 sm:gap-4">
+            <dt class="text-xs font-bold text-stone-500">${escapeHtml(labelText)}</dt>
+            <dd class="sm:col-span-2 text-sm text-stone-900 font-medium whitespace-pre-wrap">${value ? escapeHtml(value) : '<span class="text-stone-300">(未入力)</span>'}</dd>
+          </div>`;
+      });
+      confirmList.innerHTML = html;
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      buildConfirmRows();
+      form.classList.add('hidden');
+      confirmPanel.classList.remove('hidden');
+      setActiveStep(2);
+      confirmPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    backBtn.addEventListener('click', () => {
+      confirmPanel.classList.add('hidden');
+      form.classList.remove('hidden');
+      setActiveStep(1);
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    submitBtn.addEventListener('click', () => {
+      // TODO: 2026年9月のサーバー契約後、ここで実際の送信処理（fetch等）を実装する
+      confirmPanel.classList.add('hidden');
+      completePanel.classList.remove('hidden');
+      setActiveStep(3);
+      completePanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    setActiveStep(1);
+  }
+
+  setupMultiStepForm({
+    formId: 'contact-form',
+    confirmId: 'contact-confirm',
+    confirmListId: 'contact-confirm-list',
+    completeId: 'contact-complete',
+    backBtnId: 'contact-back-btn',
+    submitBtnId: 'contact-submit-btn',
   });
 </script>
 
