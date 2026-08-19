@@ -4,3 +4,6 @@
 logo_full.png
 assets/logo-mark-amber.png
 assets/logo-mark-slate.png
+
+# メール送信用の認証情報（アプリパスワードを含むため公開リポジトリに含めない）
+mail-config.php
