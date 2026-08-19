@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://chanchi-airfam.github.io/kind-corporate-site/</loc>
+    <loc>https://kind-build.co.jp/</loc>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://chanchi-airfam.github.io/kind-corporate-site/works.html</loc>
+    <loc>https://kind-build.co.jp/works.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://chanchi-airfam.github.io/kind-corporate-site/company.html</loc>
+    <loc>https://kind-build.co.jp/company.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://chanchi-airfam.github.io/kind-corporate-site/recruit.html</loc>
+    <loc>https://kind-build.co.jp/recruit.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

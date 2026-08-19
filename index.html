@@ -6,22 +6,22 @@
 <title>株式会社KIND｜建築施工・大工工事のプロフェッショナル集団</title>
 <meta name="description" content="株式会社KINDは木造新築からリフォーム、店舗内装工事まで手がける建築施工・大工工事のプロフェッショナル集団です。確かな技術と誠実な対応で現場の信頼に応えます。">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="canonical" href="https://chanchi-airfam.github.io/kind-corporate-site/">
+<link rel="canonical" href="https://kind-build.co.jp/">
 
 <!-- OGP -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="株式会社KIND">
 <meta property="og:title" content="株式会社KIND｜建築施工・大工工事のプロフェッショナル集団">
 <meta property="og:description" content="株式会社KINDは木造新築からリフォーム、店舗内装工事まで手がける建築施工・大工工事のプロフェッショナル集団です。確かな技術と誠実な対応で現場の信頼に応えます。">
-<meta property="og:url" content="https://chanchi-airfam.github.io/kind-corporate-site/">
-<meta property="og:image" content="https://chanchi-airfam.github.io/kind-corporate-site/assets/hero/hero-1.jpg">
+<meta property="og:url" content="https://kind-build.co.jp/">
+<meta property="og:image" content="https://kind-build.co.jp/assets/hero/hero-1.jpg">
 <meta property="og:locale" content="ja_JP">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="株式会社KIND｜建築施工・大工工事のプロフェッショナル集団">
 <meta name="twitter:description" content="株式会社KINDは木造新築からリフォーム、店舗内装工事まで手がける建築施工・大工工事のプロフェッショナル集団です。確かな技術と誠実な対応で現場の信頼に応えます。">
-<meta name="twitter:image" content="https://chanchi-airfam.github.io/kind-corporate-site/assets/hero/hero-1.jpg">
+<meta name="twitter:image" content="https://kind-build.co.jp/assets/hero/hero-1.jpg">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -119,9 +119,9 @@
   "@type": "GeneralContractor",
   "name": "株式会社KIND",
   "alternateName": "KIND",
-  "url": "https://chanchi-airfam.github.io/kind-corporate-site/",
-  "logo": "https://chanchi-airfam.github.io/kind-corporate-site/assets/logo-mark-black.png",
-  "image": "https://chanchi-airfam.github.io/kind-corporate-site/assets/hero/hero-1.jpg",
+  "url": "https://kind-build.co.jp/",
+  "logo": "https://kind-build.co.jp/assets/logo-mark-black.png",
+  "image": "https://kind-build.co.jp/assets/hero/hero-1.jpg",
   "description": "株式会社KINDは木造新築からリフォーム、店舗内装工事まで手がける建築施工・大工工事のプロフェッショナル集団です。",
   "address": {
     "@type": "PostalAddress",
@@ -484,11 +484,12 @@
         <div id="contact-confirm" class="hidden p-6 md:p-10">
           <p class="text-stone-500 text-sm mb-6">以下の内容でよろしければ「この内容で送信する」を押してください。</p>
           <dl id="contact-confirm-list" class="divide-y divide-stone-100 border-t border-b border-stone-100 mb-8"></dl>
+          <p id="contact-error" class="hidden text-red-600 text-sm font-bold mb-4">送信に失敗しました。時間をおいて再度お試しいただくか、お電話にてご連絡ください。</p>
           <div class="flex flex-col sm:flex-row-reverse gap-3">
             <button type="button" id="contact-submit-btn"
-              class="w-full sm:flex-1 inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold px-8 py-4 rounded-lg shadow-lg shadow-amber-500/30 transition-colors">
+              class="w-full sm:flex-1 inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold px-8 py-4 rounded-lg shadow-lg shadow-amber-500/30 transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
               <i data-lucide="send" class="w-5 h-5"></i>
-              この内容で送信する
+              <span>この内容で送信する</span>
             </button>
             <button type="button" id="contact-back-btn"
               class="w-full sm:flex-1 inline-flex items-center justify-center gap-2 border border-stone-300 hover:bg-stone-50 text-stone-700 font-bold px-8 py-4 rounded-lg transition-colors">
@@ -564,7 +565,7 @@
     return div.innerHTML;
   }
 
-  function setupMultiStepForm({ formId, confirmId, confirmListId, completeId, backBtnId, submitBtnId }) {
+  function setupMultiStepForm({ formId, confirmId, confirmListId, completeId, backBtnId, submitBtnId, errorId, endpoint }) {
     const form = document.getElementById(formId);
     if (!form) return;
     const confirmPanel = document.getElementById(confirmId);
@@ -572,6 +573,8 @@
     const completePanel = document.getElementById(completeId);
     const backBtn = document.getElementById(backBtnId);
     const submitBtn = document.getElementById(submitBtnId);
+    const errorEl = errorId ? document.getElementById(errorId) : null;
+    const submitLabel = submitBtn.querySelector('span');
     const stepWrap = form.closest('[class*="rounded-2xl"]') || document;
     const stepEls = stepWrap.querySelectorAll('[data-step]');
 
@@ -615,12 +618,32 @@
       form.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
 
-    submitBtn.addEventListener('click', () => {
-      // TODO: 2026年9月のサーバー契約後、ここで実際の送信処理（fetch等）を実装する
-      confirmPanel.classList.add('hidden');
-      completePanel.classList.remove('hidden');
-      setActiveStep(3);
-      completePanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    submitBtn.addEventListener('click', async () => {
+      if (errorEl) errorEl.classList.add('hidden');
+      submitBtn.disabled = true;
+      if (submitLabel) submitLabel.textContent = '送信中…';
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          body: new FormData(form),
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          confirmPanel.classList.add('hidden');
+          completePanel.classList.remove('hidden');
+          setActiveStep(3);
+          completePanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          if (errorEl) errorEl.classList.remove('hidden');
+        }
+      } catch (err) {
+        if (errorEl) errorEl.classList.remove('hidden');
+      } finally {
+        submitBtn.disabled = false;
+        if (submitLabel) submitLabel.textContent = 'この内容で送信する';
+      }
     });
 
     setActiveStep(1);
@@ -633,6 +656,8 @@
     completeId: 'contact-complete',
     backBtnId: 'contact-back-btn',
     submitBtnId: 'contact-submit-btn',
+    errorId: 'contact-error',
+    endpoint: 'contact-send.php',
   });
 </script>
 
