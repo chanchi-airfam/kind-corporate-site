@@ -3,14 +3,6 @@ declare(strict_types=1);
 
 header('Content-Type: application/json; charset=UTF-8');
 
-require __DIR__ . '/mail-config.php';
-require __DIR__ . '/phpmailer/Exception.php';
-require __DIR__ . '/phpmailer/PHPMailer.php';
-require __DIR__ . '/phpmailer/SMTP.php';
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception as PHPMailerException;
-
 // 送信先メールアドレス
 $to = 'd.asada@kind-build.co.jp';
 
@@ -48,6 +40,9 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     respond(false, 'メールアドレスの形式が正しくありません');
 }
 
+mb_language('Japanese');
+mb_internal_encoding('UTF-8');
+
 $mailSubject = '【KIND HP】採用応募（' . $name . '）';
 
 $body = "採用応募フォームより送信がありました。\n\n";
@@ -62,26 +57,13 @@ $body .= "経験・保有資格：" . ($experience !== '' ? $experience : '（�
 $body .= "----------------------------------------\n";
 $body .= "志望動機・自己PR：\n{$message}\n";
 
-$mail = new PHPMailer(true);
-try {
-    $mail->isSMTP();
-    $mail->Host       = 'smtp.gmail.com';
-    $mail->SMTPAuth   = true;
-    $mail->Username   = SMTP_USERNAME;
-    $mail->Password   = SMTP_PASSWORD;
-    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-    $mail->Port       = 587;
-    $mail->CharSet    = 'UTF-8';
+$headers = 'From: website@kind-build.co.jp' . "\r\n";
+$headers .= 'Reply-To: ' . $email;
 
-    $mail->setFrom(SMTP_USERNAME, SMTP_FROM_NAME);
-    $mail->addAddress($to);
-    $mail->addReplyTo($email, $name);
+$sent = mb_send_mail($to, $mailSubject, $body, $headers);
 
-    $mail->Subject = $mailSubject;
-    $mail->Body    = $body;
-
-    $mail->send();
+if ($sent) {
     respond(true);
-} catch (PHPMailerException $e) {
+} else {
     respond(false, 'メール送信に失敗しました');
 }
